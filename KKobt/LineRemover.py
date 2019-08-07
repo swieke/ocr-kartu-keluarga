@@ -57,7 +57,7 @@ def markVertical(path):
             x.append(x1)
             y.append(y1)
     
-    return x, height, y
+    return x, height, y, width
 
 
 def cluster(data, maxgap):
@@ -137,28 +137,28 @@ name = 1
 def crop(xp,height,image,ratio):
     idx = 1
     global name
-    textHeader = ''
+    
     text = ''
     while idx < (len(xp)-1):
         # print(idx)
         new_img = image[int(ratio*height):height-10, xp[idx]+5:xp[idx+1]]
         cv.imwrite(str(name)+'.jpg',new_img)
-        text += pytesseract.image_to_string(new_img, lang="ind", config='--psm 11 --oem 3') +'\n'
+        text += pytesseract.image_to_string(new_img, lang="ind", config='--psm 6 --oem 3') +'\n'
         idx += 1
         name+= 1
 
     return text
 
 
-def cropHeader(xp,height,image,ratio):
+def cropHeader(xp,height,image,ratio,width):
     idx = 1
     global name
 
     text = ''
     
-    new_img = image[0:int(ratio * height[0]), xp[0]:xp[9]]
+    new_img = image[0:int(ratio * height[len(height)-1]),0: width]
     cv.imwrite('header.jpg',new_img)
-    text += pytesseract.image_to_string(new_img, lang="ocr", config='--psm 11 --oem 3') +'\n'
+    text += pytesseract.image_to_string(new_img, lang="ind", config='--psm 11 --oem 3') +'\n'
     idx += 1
     name+= 1
 
