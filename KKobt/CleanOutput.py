@@ -2,15 +2,6 @@ import re
 import json
 from fuzzywuzzy import process
 
-# def extract(id):
-#         person = []
-#         for k in range(int(len(splitLine))):
-#                 if k+id < len(splitLine):
-#                 person.append(splitLine[k+id])
-#                 id+=jumlahData-1
-#         print(person)
-#         family.append(person)
-
 
 def Clean(inputtext):
         f = inputtext
@@ -45,7 +36,7 @@ def Clean(inputtext):
         for i in splitLine:
                 print(i)
         
-        print(len(splitLine))
+       
                 
 
         jumlahData = int(len(splitLine)/12)
@@ -101,8 +92,82 @@ def Clean(inputtext):
                 attrs['dob'] = member["dob"]
                 attrs['agama'] = member["agama"]
                 attrs['pendidikan'] = member["pendidikan"]
-                # print(attrs)
-        # print(attrs)
+                
+
+def CleanHeader(inputtext):
+        f = inputtext
+        f = inputtext.splitlines()
+        
+
+        f = [line.strip() for line in f]
+        cleanLine = []
+        
+        for line in f:
+                if int(len(line))>3 and ':' in line:
+                        line = re.sub('[^ a-zA-Z0-9 -/]','',line)
+                        cleanLine.append(line)
+                        print(line)
+                else:
+                        continue
+
+        splitLine = []
+        for i in cleanLine:
+                if int(len(i))>3:
+                        i = i.split(' ')
+                        i = [word for word in i if word]
+                        splitLine.append(i)
+
+        for i in splitLine:
+                print(i)
+
+        header= {}
+        
+        for info in splitLine:
+                if ('Nama' or 'Kepala' or 'Keluarga') in info:
+                        header["kepalaKeluarga"] = info[3]
+                        print(info)
+                elif ('Alamat' in info or 'alamat' in info):
+                        header["alamat"] = info[1]
+                elif ('RTRW' in info or 'RW' in info):
+                        header["rtRW"] = info[1]
+                elif ('Kode' in info or 'Pos' in info):
+                        header["kodePos"] = info[2]
+                elif ('Desa' in info or 'Kelurahan' in info):
+                        header["desaKelurahan"] = info[1]
+                elif ('kecamatan' in info or 'Kecamatan' in info):
+                        header['kecamatan'] = info[1]
+                elif ('Kabupaten' in info or 'kabupaten' in info):
+                        header['kabupatenKota'] = info[1]
+                else:
+                        continue
+        
+        print(header)
+
+def getKKNo(inputtext):
+        f = inputtext
+        f = inputtext.splitlines()
+        
+
+        f = [line.strip() for line in f]
+        cleanLine = []
+        
+        for line in f:
+                if int(len(line))>3 and ('No' in line or 'no' in line):
+                        line = re.sub('[^ a-zA-Z0-9 -/]','',line)
+                        cleanLine.append(line)
+                        print(line)
+                else:
+                        continue
+
+        splitLine = []
+        for i in cleanLine:
+                if int(len(i))>3:
+                        i = i.split(' ')
+                        i = [word for word in i if word]
+                        splitLine.append(i)
+
+                
+
     
                 
 

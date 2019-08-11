@@ -78,17 +78,20 @@ def box_extraction(img_for_box_extraction_path):
         # If the box height is greater then 20, widht is >80, then only save it as a box in "cropped/" folder.
         if (w > width/2 and h > 250) and (w > 3*h) and idx==0:   #if (w > width/2.3 and h > 400) and w > 3*h:
             idx += 1
+            
+            yH = y
             new_img = img[y:y+h, x:x+w]
             x1 = x
             x2 = x+ w
             y2 = y+h
+         
             height2 = h
             table1 = new_img
-
+         
     
     table2 = img[y2:y2+height2-35,x1:x2]
     
-    return table1, table2
+    return table1, table2, yH
 
 
 

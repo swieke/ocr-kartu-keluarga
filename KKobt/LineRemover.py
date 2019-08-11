@@ -56,7 +56,9 @@ def markVertical(path):
             cv.line(img,(x1,y1),(x2,y2),(0,255,0),2)
             x.append(x1)
             y.append(y1)
+            # print(x1, y1)
     
+    cv.imwrite('markvertical.jpg', img)
     return x, height, y, width
 
 
@@ -155,11 +157,35 @@ def cropHeader(xp,height,image,ratio,width):
     global name
 
     text = ''
+    textH1 = ''
+    textH2 = ''
     
-    new_img = image[0:int(ratio * height[len(height)-1]),0: width]
-    cv.imwrite('header.jpg',new_img)
-    text += pytesseract.image_to_string(new_img, lang="ind", config='--psm 11 --oem 3') +'\n'
+    new_img = image[0:height, 0: width]
+    img1 = image[0:height, 0:int(0.5*width)]
+    img2 = image[0:height, int(0.5*width):width]
+    # cv.imwrite('header.jpg',new_img)
+    # cv.imwrite('header1.jpg', img1)
+    # cv.imwrite('header2.jpg', img2)
+    textH1 += pytesseract.image_to_string(img1, lang="ind", config='--psm 6 --oem 1') + '\n'
+    textH2 += pytesseract.image_to_string(img2, lang="ind", config='--psm 6 --oem 1') + '\n'
+    text += pytesseract.image_to_string(new_img, lang="ind", config='--psm 6 --oem 3') + '\n'
     idx += 1
     name+= 1
 
-    return text
+    return textH1+textH2, text
+
+
+# def cropHeader(xp,height,image,ratio,width):
+#     idx = 1
+#     global name
+
+#     text = ''
+    
+#     new_img = image[0:height, 0: width]
+#     cv.imwrite('header.jpg',new_img)
+#     text += pytesseract.image_to_string(new_img, lang="ind", config='--psm 6 --oem 3') + '\n'
+#     # text += pytesseract.image_to_string(new_img, lang="ind", config='--psm 6 --oem 3') + '\n'
+#     idx += 1
+#     name+= 1
+
+#     return text
